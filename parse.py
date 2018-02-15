@@ -32,19 +32,3 @@ for idx,i in enumerate(q_noun):
         q_noun[idx]=str(q_noun[idx]).replace(" "+j," ")
 
 print (q_noun)
-
-
-
-# from textblob import TextBlob
-# str="who is the president of india?"
-# blob=TextBlob(str)
-# print(blob.tags)
-# [('who', 'WP'), ('is', 'VBZ'), ('the', 'DT'), ('president', 'NN'), ('of', 'IN'), ('india', 'NN')]
-# str="what is the birthplace of Barack Obama?"
-# blob=TextBlob(str)
-# print(blob.tags)
-# [('what', 'WP'), ('is', 'VBZ'), ('the', 'DT'), ('birthplace', 'NN'), ('of', 'IN'), ('Barack', 'NNP'), ('Obama', 'NNP')]
-# >>> str="where was barack obama born?"
-# >>> blob=TextBlob(str)
-# >>> print(blob.tags)
-# [('where', 'WRB'), ('was', 'VBD'), ('barack', 'JJ'), ('obama', 'NN'), ('born', 'VBN')]

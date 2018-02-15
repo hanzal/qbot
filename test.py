@@ -1,29 +1,33 @@
-import requests
-import nltk, pattern.en
-
+import requests, json, nltk, pattern.en
+from nltk import tree
+from pprint import pprint
 while True:
     question = raw_input('Enter the question: \n')
     if question == "close":
         break
 
-
-    t=pattern.en.tag(question)
+    t = pattern.en.tag(question)
+    #grammar = r"""NP: {<DT|PP\$>?<JJ>*<NN.*>+}"""
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
-                NP_A: {<NN.*>+<IN>*<JJ.*>*}"""
+                # NP_A: {<NN.*>+<IN>*<JJ.*>*}
+                # NP_S: {<NN.*>?}"""
+
     np_parser = nltk.RegexpParser(grammar)
     np_tree = np_parser.parse(t)
-    print np_tree
+    #pprint (np_tree)
     q_noun = []
     for i in np_tree:
         #to get all the Noun Phrases to q_noun
         NPs=""
-        if str(type(i))=="<class 'nltk.tree.Tree'>":
+        #print type(i) #shows the type of all nodes
+        if type(i) == tree.Tree:
               for k in i:
                 if NPs=="":
                     NPs=k[0]
                 else:
                     NPs=NPs+" "+k[0]
                     q_noun.append(NPs)
+
     conjuction = ["of","in","as","if","as if","even","than","that","until","and","but","or","nor","for","yet","so"]
     for idx,i in enumerate(q_noun):
         #removes conjunction and replaces it with " " in btwn words for searching
@@ -32,8 +36,9 @@ while True:
             q_noun[idx]=str(q_noun[idx]).replace(j+" "," ")
             q_noun[idx]=str(q_noun[idx]).replace(" "+j," ")
 
-    print(q_noun)
+    print q_noun
     if len(q_noun) == 1:
+
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
             'wbsearchentities&search='+q_noun[0]+'&language=en&format=json')
         search_json = search_resp.json()
@@ -74,7 +79,6 @@ while True:
                     answer_resp = requests.get('https://www.wikidata.org/w/api.php?'
                         'action=wbgetentities&ids='+property_value_id+'&format=json&languages=en')
                     answer_json = answer_resp.json()
-                    #pprint(answer_json)
                     answer = answer_json['entities'][property_value_id]['labels']['en']['value']
                     descr=answer_json['entities'][property_value_id]['descriptions']['en']['value']
                     answer_fetched = True
@@ -83,8 +87,19 @@ while True:
                 break
 
         if answer_fetched:
-            # print(descr)
-            print('Answer : ',answer)
+            print 'Answer : ', answer
+            #print 'Answer : ', json.dumps(answer) #to remove u from answer
+
+
 
         else:
-            print('Cant find the answer')
+            print'Cant find the answer'
+
+
+
+
+# (qas-env) C:\Users\Achi\Desktop\nltk_apps\qbot>python test.py
+# Enter the question:
+# who is the author of harry potter?
+# Answer :  J. K. Rowling
+# Enter the question:
