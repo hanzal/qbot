@@ -1,5 +1,5 @@
 Penn Part of Speech Tags
-Note:  these are the 'modified' tags used for Penn tree banking; these are the tags used in the Jet system. NP, NPS, PP, and PP$ from the original Penn part-of-speech tagging were changed to NNP, NNPS, PRP, and PRP$ to avoid clashes with standard syntactic categories.
+-------------------------------------------------
 CC	coordinating conjunction
 CD	cardinal digit
 DT	determiner

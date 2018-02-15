@@ -26,7 +26,7 @@ while True:
                     q_noun.append(NPs)
     conjuction = ["of","in","as","if","as if","even","than","that","until","and","but","or","nor","for","yet","so"]
     for idx,i in enumerate(q_noun):
-        #add + in btwn words for searching
+        #removes conjunction and replaces it with " " in btwn words for searching
         q_noun[idx] = q_noun[idx].lower()
         for j in conjuction:
             q_noun[idx]=str(q_noun[idx]).replace(j+" "," ")
