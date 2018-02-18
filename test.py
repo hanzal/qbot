@@ -1,5 +1,6 @@
 import requests
 import nltk, pattern.en
+#from pprint import pprint
 
 while True:
     question = raw_input('Enter the question: \n')
@@ -9,7 +10,9 @@ while True:
 
     t=pattern.en.tag(question)
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
-                NP_A: {<NN.*>+<IN>*<JJ.*>*}"""
+                    {<NNP>+}
+                    {<NN.*>+<IN>*<JJ.*>*}"""
+
     np_parser = nltk.RegexpParser(grammar)
     np_tree = np_parser.parse(t)
     print np_tree
@@ -37,9 +40,9 @@ while True:
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
             'wbsearchentities&search='+q_noun[0]+'&language=en&format=json')
         search_json = search_resp.json()
-        #print(search_json['search'][0]['description'])
+        #pprint(search_json['search'][0]['description'])
         a=search_json['search'][0]['id']
-        #print (a)
+        #pprint (a)
         entity_resp = requests.get('https://www.wikidata.org/w/api.php?'
             'action=wbgetentities&ids='+ a +'&format=json&languages=en')
         entity_json = entity_resp.json()
@@ -54,7 +57,7 @@ while True:
 
         for p in search_json['search']:
             property_ids.append(p['id'])
-        #print(property_ids)
+        #pprint(property_ids)
         answer_fetched = False
         answer = ''
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
@@ -82,9 +85,9 @@ while True:
             if answer_fetched:
                 break
 
-        if answer_fetched:
+    if answer_fetched:
             # print(descr)
-            print('Answer : ',answer)
+        print('Answer : ',answer)
 
-        else:
-            print('Cant find the answer')
+    else:
+        print('Cant find the answer')

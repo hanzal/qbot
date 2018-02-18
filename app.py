@@ -14,10 +14,7 @@ while True:
     for i in blob.tags:
         if i[1]=='NN':
             nouns.append(i[0])
-<<<<<<< HEAD
-=======
 
->>>>>>> master
     #print(nouns)
     #print(len (nouns))
     if len(nouns) == 1:
@@ -33,14 +30,7 @@ while True:
         #pprint(entity_json)
         print(entity_json['entities'][a]['descriptions']['en']['value'])
 
-<<<<<<< HEAD
 
-
-
-
-
-=======
->>>>>>> master
     else:
         property_ids = []
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
