@@ -7,7 +7,7 @@ while True:
         break
 
     t = pattern.en.tag(question)
-    #grammar = r"""NP: {<DT|PP\$>?<JJ>*<NN.*>+}"""
+    # grammar = r"""NP: {<JJ.*>+$} """
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
                 # NP_A: {<NN.*>+<IN>*<JJ.*>*}
                 # NP_S: {<NN.*>?}"""
