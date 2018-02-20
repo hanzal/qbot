@@ -10,7 +10,10 @@ while True:
 
     t=pattern.en.tag(question)
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
-                  NP: {<NNP>+}
+                      {<JJ.*>*<NNS><IN>+<DT>*<NN.*>+}
+                      {<JJ.*>*<IN>*<NN.*>+}
+                      {<IN>*<CD>+}
+                      {<JJ.*>*<NN.*>+<VB.*><IN>?}
                   NP: {<NN.*>+<IN>*<JJ.*>*}"""
     #grammar = [r"""NP: {<JJ.*>*<NNS><IN>+<DT>*<NN.*>+}""",r"""NP: {<JJ.*>*<IN>*<NN.*>+}
 	 #          {<NN.*><IN>+<JJ.*>+}
