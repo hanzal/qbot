@@ -8,9 +8,12 @@ while True:
 
     t = pattern.en.tag(question)
     # grammar = r"""NP: {<JJ.*>+$} """
+    # grammar = r"""NP: {<JJ.*>+<NN.*>+}
+    #             # NP_A: {<NN.*>+<IN>*<JJ.*>*}
+    #             # NP_S: {<NN.*>?}"""
+
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
-                # NP_A: {<NN.*>+<IN>*<JJ.*>*}
-                # NP_S: {<NN.*>?}"""
+            NP_A: {<NN.*>+<IN>*<JJ.*>*}"""
 
     np_parser = nltk.RegexpParser(grammar)
     np_tree = np_parser.parse(t)
