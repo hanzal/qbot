@@ -30,6 +30,7 @@ while True:
         #pprint(entity_json)
         print(entity_json['entities'][a]['descriptions']['en']['value'])
 
+
     else:
         property_ids = []
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
