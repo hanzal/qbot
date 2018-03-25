@@ -1,0 +1,11 @@
+Q : war ?
+Q : water ?
+Q : water ?
+Q : hary potter ?
+Q : harry potter ?
+Q :  ?
+Q : jesus christ ?
+Q : rain ?
+Q : hello ?
+Q : web ?
+Q : hell ?

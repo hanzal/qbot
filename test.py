@@ -3,10 +3,12 @@ import nltk, pattern.en
 #from pprint import pprint
 
 while True:
-    question = raw_input('Enter the question: \n')
+    f=open("history.txt","a")
+    question = raw_input('Enter the question: ')
+    f.writelines("Q : %s ?\n" % question)
+    f.close()
     if question == "close":
         break
-
 
     t=pattern.en.tag(question)
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
@@ -132,6 +134,14 @@ while True:
         if answer_fetched:
             # print(descr)
             print('Answer : ',answer)
-
+            f.open("history.txt","a+")
+            f.writelines("Answer : %s\n\n" % answer)
+            f.close()
         else:
             print('Cant find the answer')
+
+    #f.writelines("Cant find answer\n\n")
+    # f=open("history.txt","a+")
+    # f.writelines("Q : %s ?\n" % question)
+    # f.writelines("Answer : %s\n\n" % answer)
+    #f.close()
