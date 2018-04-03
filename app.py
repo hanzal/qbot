@@ -1,6 +1,7 @@
 import requests, json, nltk, pattern.en
 from nltk import tree
 from pprint import pprint
+from models import History
 def run():
     while True:
         question = raw_input('Enter the question: \n')
@@ -89,6 +90,8 @@ def run():
                     break
 
             if answer_fetched:
+                History.create(question=question, answer= answer, q_noun=str(q_noun))
+
                 print 'Answer : ', answer
                 #print 'Answer : ', json.dumps(answer) #to remove u from answer
 
@@ -96,6 +99,8 @@ def run():
 
             else:
                 print'Cant find the answer'
+
+
 
 if __name__ == '__main__':
     run()
