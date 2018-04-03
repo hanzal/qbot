@@ -6,7 +6,6 @@ class History(Model):
     question = CharField()
     q_noun = CharField()
     answer = CharField()
-    content = CharField()
 
     class Meta:
         database = db

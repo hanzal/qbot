@@ -15,10 +15,9 @@ def run():
 
         np_parser = nltk.RegexpParser(grammar)
         np_tree = np_parser.parse(t)
-        #pprint (np_tree)
+        # pprint (np_tree)
         q_noun = []
         for i in np_tree:
-
             #to get all the Noun Phrases to q_noun
             NPs=""
             #print type(i) #shows the type of all nodes
@@ -39,15 +38,18 @@ def run():
             for j in conjuction:
                 q_noun[idx]=str(q_noun[idx]).replace(j+" "," ")
                 q_noun[idx]=str(q_noun[idx]).replace(" "+j," ")
-
-        #print q_noun
+        #retrieve from History
+        answer_doc = History.select().where(History.q_noun == str(q_noun))
+        for i in answer_doc:
+            print("from db",i.answer)
+        # print q_noun
         if len(q_noun) == 1:
             search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
                 'wbsearchentities&search='+q_noun[0]+'&language=en&format=json')
             search_json = search_resp.json()
             #print(search_json['search'][0]['description'])
-            a=search_json['search'][0]['id']
-            #print (a)
+            a = search_json['search'][0]['id']
+            # print (a)
             entity_resp = requests.get('https://www.wikidata.org/w/api.php?'
                 'action=wbgetentities&ids='+ a +'&format=json&languages=en')
             entity_json = entity_resp.json()
@@ -90,6 +92,7 @@ def run():
                     break
 
             if answer_fetched:
+
                 History.create(question=question, answer= answer, q_noun=str(q_noun))
 
                 print 'Answer : ', answer
