@@ -1,5 +1,6 @@
 import requests
 import nltk, pattern.en
+#from pprint import pprint
 
 while True:
     question = raw_input('Enter the question: \n')
@@ -9,7 +10,12 @@ while True:
 
     t=pattern.en.tag(question)
     grammar = r"""NP: {<JJ.*>+<NN.*>+}
-                NP_A: {<NN.*>+<IN>*<JJ.*>*}"""
+                  NP: {<NNP>+}
+                  NP: {<NN.*>+<IN>*<JJ.*>*}"""
+    #grammar = [r"""NP: {<JJ.*>*<NNS><IN>+<DT>*<NN.*>+}""",r"""NP: {<JJ.*>*<IN>*<NN.*>+}
+	 #          {<NN.*><IN>+<JJ.*>+}
+	  #          {<IN>*<CD>+}""",r"""NP:{<JJ.*>*<NN.*>+<VB.*><IN>?}"""]
+    #j=0
     np_parser = nltk.RegexpParser(grammar)
     np_tree = np_parser.parse(t)
     print np_tree
@@ -18,28 +24,66 @@ while True:
         #to get all the Noun Phrases to q_noun
         NPs=""
         if str(type(i))=="<class 'nltk.tree.Tree'>":
-              for k in i:
-                if NPs=="":
+            for k in i:
+                    # if j==0:
+					# 	if k[1]=="NNS":
+					# 		t=pattern.en.singularize(k[0])
+					# 	else:
+					# 		t=k[0]
+				    # elif j==1:
+					# 	if k[1]=="IN":
+					# 		continue
+					# 	else:
+					# 		t=k[0]
+					# elif j==2:
+					# 	a = re.compile("VB.*")
+					# 	if a.match(k[1]):
+   					# 		q_noun.append(NPs)
+   					# 		NPs=""
+					# 	else:
+   					# 		t=k[0]
+                    #
+					# if NPs=="":
+					# 	NPs=t
+					# else:
+					# 	NPs=NPs+" "+t
+                    #     q_noun.append(NPs)
+                if k[1]=="NNP":
+				    Nps=pattern.en.singularize(k[0])
+                #    q_noun.append(NPs)
+                elif NPs=="":
                     NPs=k[0]
                 else:
                     NPs=NPs+" "+k[0]
-                    q_noun.append(NPs)
+            q_noun.append(NPs)
+    # if (q_noun and j==0) or (len(q_noun)!=1 and j==1):
+	# 	break
+	# if j==1 and len(q_noun)==1:
+	# 	q_noun1=q_noun[:]
+	# if j==2 and not q_noun:
+	# 	q_noun=q_noun1[:]
+	# j+=1
+    #
+    #
+
+
     conjuction = ["of","in","as","if","as if","even","than","that","until","and","but","or","nor","for","yet","so"]
     for idx,i in enumerate(q_noun):
-        #add + in btwn words for searching
+        #removes conjunction and replaces it with " " in btwn words for searching
         q_noun[idx] = q_noun[idx].lower()
         for j in conjuction:
             q_noun[idx]=str(q_noun[idx]).replace(j+" "," ")
             q_noun[idx]=str(q_noun[idx]).replace(" "+j," ")
 
     print(q_noun)
+    print(len(q_noun))
     if len(q_noun) == 1:
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
             'wbsearchentities&search='+q_noun[0]+'&language=en&format=json')
         search_json = search_resp.json()
-        #print(search_json['search'][0]['description'])
+        #pprint(search_json['search'][0]['description'])
         a=search_json['search'][0]['id']
-        #print (a)
+        #pprint (a)
         entity_resp = requests.get('https://www.wikidata.org/w/api.php?'
             'action=wbgetentities&ids='+ a +'&format=json&languages=en')
         entity_json = entity_resp.json()
@@ -54,7 +98,7 @@ while True:
 
         for p in search_json['search']:
             property_ids.append(p['id'])
-        #print(property_ids)
+        #pprint(property_ids)
         answer_fetched = False
         answer = ''
         search_resp = requests.get('https://www.wikidata.org/w/api.php?action='
