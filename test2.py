@@ -42,9 +42,9 @@ def run():
                 q_noun[idx]=str(q_noun[idx]).replace(" "+j," ")
         #retrieve from History
         answer_doc = History.select().where(History.q_noun == str(q_noun))
-        # for i in answer_doc:
-            # print("from db",i.answer)
-
+        if answer_doc:
+            print "From History:, answer_doc[0].answer
+            return
         answer = None
         if len(q_noun) == 1:
             a = wikidata_search(q_noun[0])
