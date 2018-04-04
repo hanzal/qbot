@@ -14,7 +14,7 @@ def parse(q_tagged):
 		print(repr(np_tree))
 		for i in np_tree:
 			print(repr("NP : " + str(i)))						#to get all the Noun Phrases to q_noun
-			NPs=""
+			NPs=""2
 			if str(type(i))=="<class 'nltk.tree.Tree'>":
 				for k in i:
 					if j==0:
