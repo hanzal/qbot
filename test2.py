@@ -48,8 +48,10 @@ def run():
         if len(q_noun) == 1:
             a = wikidata_search(q_noun[0])
             entity_json = wikidata_get_entity(a['qid'])
-            entity_json['entities'][a['qid']]['descriptions']['en']['value']
-
+            val = entity_json['entities'][a['qid']]['descriptions']['en']['value']
+            if val:
+                answer = val
+                History.create(question=question, answer= answer, q_noun=str(q_noun))
 
         elif "distance" in question:
             q_noun_copy = list(q_noun)
@@ -86,8 +88,8 @@ def run():
             r = 6371 # Radius of earth in kilometers. Use 3956 for miles
             d = int(c*r)
             value = str(d) + " kms approx."
-            History.create(question=question, answer= value, q_noun=str(q_noun_copy))
-            print(value)
+            answer = value
+            History.create(question=question, answer= answer, q_noun=str(q_noun_copy))
 
 
         else:
@@ -118,9 +120,12 @@ def run():
 
             if answer_fetched:
                 History.create(question=question, answer= answer, q_noun=str(q_noun))
-                print 'Answer : ', answer
-            else:
-                print'Cant find the answer'
+
+
+        if answer:
+            print ('Answer : ', answer.decode())
+        else:
+            print("Oops!Can't find the answer.")
 
 def wikidata_search(q_noun):
     qid = False
